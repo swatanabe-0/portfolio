@@ -209,7 +209,7 @@ if (finePointer && !reduceMotion) {
 // ==========================================
 function initScrollFx() {
   $$('.reveal').forEach((el) => {
-    gsap.fromTo(el, { opacity: 0.15 }, {
+    gsap.fromTo(el, { opacity: 0.55 }, {
       opacity: 1, ease: 'none',
       scrollTrigger: { trigger: el, start: 'top 82%', end: 'top 50%', scrub: true }
     });

@@ -122,7 +122,7 @@ body[data-role="exec"] .note-exec { display: block; }
 /* about */
 .about-text { max-width: 900px; display: grid; gap: 22px; }
 .about-text p { font-size: clamp(20px, 3vw, 34px); line-height: 1.45; font-weight: 600; }
-.reveal { opacity: .15; }
+.reveal { opacity: .55; }
 
 /* skills */
 .skills-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
@@ -333,8 +333,10 @@ body[data-role="exec"] .note-exec { display: block; }
   section { padding: 12vh 6vw; }
 
   /* ロール選択：スマホでは3枚が1画面に収まるように詰める */
-  .role-boot { margin-bottom: 20px; }
-  .role:not(.is-loading) .role-boot { display: none; }
+  /* ブート表示は、選択カードと同じ場所に重ねる（消えてもレイアウトがずれない） */
+  .role-inner { position: relative; }
+  .role-boot { position: absolute; top: 0; left: 0; right: 0; margin: 0; transition: opacity .3s; }
+  .role:not(.is-loading) .role-boot { opacity: 0; visibility: hidden; pointer-events: none; }
   .role-inner h2 { font-size: 24px; margin-bottom: 20px; }
   .role-cards { gap: 10px; }
   .role-card { padding: 14px 18px; gap: 2px; }
