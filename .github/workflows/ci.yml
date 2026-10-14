@@ -1,0 +1,44 @@
+name: CI
+
+# main への push と、プルリクエストのたびに、品質チェックを自動で実行する
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 余計な権限を持たせない（リポジトリの読み取りだけ）
+permissions:
+  contents: read
+
+# 同じブランチで新しい実行が始まったら、古い実行は取り消す
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Lint / Format / Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (ESLint)
+        run: npm run lint
+
+      - name: Format check (Prettier)
+        run: npm run format:check
+
+      - name: Build (Vite)
+        run: npm run build

@@ -1,5 +1,7 @@
 # Portfolio — 渡辺翔太 / Watanabe Shota
 
+[![CI](https://github.com/swatanabe-0/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/swatanabe-0/portfolio/actions/workflows/ci.yml)
+
 就職活動用のポートフォリオサイトです。**「実績が少ないなら、サイト自体を成果物にする」** ことを目標に制作しました。
 
 - 情報は、確実に読める層に置いています。
@@ -44,6 +46,24 @@ npm run build
 ```
 
 `dist/` に出力されます。
+
+### 品質チェック
+
+```bash
+npm run check
+```
+
+表の上の3つ（`lint`・`format:check`・`build`）を順に実行します。それぞれ、個別にも実行できます。
+
+| コマンド               | 内容                                      |
+| ---------------------- | ----------------------------------------- |
+| `npm run lint`         | ESLint によるコードの静的チェック         |
+| `npm run format:check` | Prettier による整形のチェック             |
+| `npm run build`        | 本番用ビルドが通るか                      |
+| `npm run format`       | Prettier で整形する（ファイルを書き換え） |
+| `npm run lint:fix`     | ESLint で自動修正できるものを直す         |
+
+同じチェックを、GitHub Actions（`.github/workflows/ci.yml`）が `main` への push のたびに自動で実行します。
 
 ### 開発用のURLパラメータ
 
