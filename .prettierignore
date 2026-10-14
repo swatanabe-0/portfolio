@@ -1,0 +1,11 @@
+# ビルド結果・依存パッケージ・手元の保管用
+dist/
+node_modules/
+legacy/
+public/
+
+# 自動生成
+package-lock.json
+
+# HTML は、インライン要素の間の空白が表示に影響するため、自動整形の対象外にする
+index.html
