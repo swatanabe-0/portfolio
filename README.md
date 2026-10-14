@@ -55,12 +55,30 @@ npm run build
 ## ファイル構成
 
 ```
-index.html   ページの構造と文章
-style.css    見た目
-main.js      動き・物理演算・ミニデモ・ターミナル・ロール別表示
+index.html            ページの構造と文章
+style.css             見た目
+main.js               起動の順序だけを書いたエントリーポイント
+src/
+  dom.js              共通の小さな道具（$, $$, 環境判定）
+  data.js             文言データ（SKILLS / PROFILE / ROLES）
+  scroll.js           慣性スクロール、ページ内リンク
+  pointer-fx.js       スクランブル文字、カスタムカーソル、磁石ボタン
+  background.js       背景の粒子
+  scroll-fx.js        スクロール連動の演出
+  skills.js           Skills（物理バッジ、一覧表示、詳細）
+  demos.js            スキルのミニデモ（Skills の画面に入ったときに読み込み）
+  resume.js           Quick Resume
+  terminal.js         ターミナル
+  confetti.js         紙吹雪
+  hero.js             名前の文字の物理演算
+  roles.js            ロール選択と、最初の短いブート
+public/               favicon、OGP 画像
 ```
 
-文言（スキルの説明、ロール別の文面など）は、`main.js` の先頭にある `SKILLS` と `ROLES`、`index.html` の各セクションにまとめています。
+### 設計メモ
+- **表示と操作の層を分けています。** 文章は `index.html` に置き、JavaScript が無くても内容を読めます。演出は、後から重ねています。
+- **重いものは、必要になるまで読み込みません。** ミニデモは Skills の画面に入ったとき、Three.js は「Three.js」のバッジを開いたときに、初めて読み込みます。
+- **文言は `src/data.js` に集めています。** スキルの説明やロール別の文面は、そこだけを書き換えれば変わります。ページ内の文章は、`index.html` の各セクションにあります。
 
 ## 制作について
 
