@@ -9,11 +9,11 @@ import { initTerminal } from './src/terminal.js';
 import { initHero } from './src/hero.js';
 import { initRoles } from './src/roles.js';
 
-initScroll();      // 慣性スクロール、ページ内リンク
-initPointerFx();   // スクランブル文字、カーソル、磁石ボタン
-initBackground();  // 背景の粒子
-initSkills();      // Skills（物理バッジ、一覧、ミニデモ）
-initResume();      // Quick Resume
-initTerminal();    // ターミナル
-initHero();        // 名前の文字の物理演算
-initRoles();       // ロール選択とブート（最後に呼ぶ：ここで画面が始まる）
+initScroll(); // 慣性スクロール、ページ内リンク
+initPointerFx(); // スクランブル文字、カーソル、磁石ボタン
+initBackground(); // 背景の粒子
+initSkills(); // Skills（物理バッジ、一覧、ミニデモ）
+initResume(); // Quick Resume
+initTerminal(); // ターミナル
+initHero(); // 名前の文字の物理演算
+initRoles(); // ロール選択とブート（最後に呼ぶ：ここで画面が始まる）

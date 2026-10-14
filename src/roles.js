@@ -32,7 +32,9 @@ function applyRole(key) {
   const role = ROLES[currentRole];
   document.body.dataset.role = currentRole;
   $('.hero-sub').textContent = role.sub;
-  $$('.about-text .reveal').forEach((p, i) => { if (role.about[i]) p.textContent = role.about[i]; });
+  $$('.about-text .reveal').forEach((p, i) => {
+    if (role.about[i]) p.textContent = role.about[i];
+  });
 
   role.order.forEach((id, i) => {
     $('#' + id).style.order = i + 1;
@@ -73,14 +75,24 @@ function runBoot(fast) {
     bootDone = true;
     window.removeEventListener('keydown', finish);
     roleEl.removeEventListener('click', finish);
-    if (bootTimeline) { bootTimeline.kill(); bootTimeline = null; }
+    if (bootTimeline) {
+      bootTimeline.kill();
+      bootTimeline = null;
+    }
     bootLog.textContent = BOOT_LINES.join('\n');
     bootFill.style.width = '100%';
-    try { sessionStorage.setItem('portfolio-booted', '1'); } catch (e) { /* 保存できなくても動作に影響なし */ }
+    try {
+      sessionStorage.setItem('portfolio-booted', '1');
+    } catch (e) {
+      /* 保存できなくても動作に影響なし */
+    }
     showChoices();
   };
 
-  if (fast) { finish(); return; }
+  if (fast) {
+    finish();
+    return;
+  }
 
   // クリックかキー入力で、ブートを飛ばせる
   window.addEventListener('keydown', finish);
@@ -88,7 +100,13 @@ function runBoot(fast) {
   bootTimeline = gsap.timeline({ onComplete: finish });
   bootTimeline.fromTo(bootFill, { width: '0%' }, { width: '100%', duration: 1.4, ease: 'power1.inOut' }, 0);
   BOOT_LINES.forEach((line, i) => {
-    bootTimeline.call(() => { bootLog.textContent += (i ? '\n' : '') + line; }, null, i * 0.4);
+    bootTimeline.call(
+      () => {
+        bootLog.textContent += (i ? '\n' : '') + line;
+      },
+      null,
+      i * 0.4
+    );
   });
   bootTimeline.to({}, { duration: 0.1 });
 }
@@ -98,12 +116,21 @@ function chooseRole(key) {
   roleEl.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('is-booting');
   applyRole(key);
-  if (lenis) { lenis.start(); lenis.scrollTo(0, { immediate: true }); }
+  if (lenis) {
+    lenis.start();
+    lenis.scrollTo(0, { immediate: true });
+  }
   window.scrollTo(0, 0);
 
   if (!started) {
     started = true;
-    gsap.from('.hero .eyebrow, .hero-sub, .hero-actions', { opacity: 0, y: 20, duration: 0.8, stagger: 0.1, delay: 0.6 });
+    gsap.from('.hero .eyebrow, .hero-sub, .hero-actions', {
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      stagger: 0.1,
+      delay: 0.6
+    });
     initScrollFx();
   } else {
     gsap.from('.hero-sub', { opacity: 0, y: 12, duration: 0.6 });
@@ -114,15 +141,24 @@ function chooseRole(key) {
 }
 
 export function initRoles() {
-  $$('[data-role]', roleEl).forEach((btn) => btn.addEventListener('click', () => chooseRole(btn.dataset.role)));
+  $$('[data-role]', roleEl).forEach((btn) =>
+    btn.addEventListener('click', () => chooseRole(btn.dataset.role))
+  );
   $('#roleChip').addEventListener('click', openRole);
 
   // 起動：?role=xxx で選択を飛ばせる（開発・共有用）。同一セッションの2回目以降は、ブートを省略する
   const params = new URLSearchParams(location.search);
   const requested = params.get('role');
-  if (requested && ROLES[requested]) { chooseRole(requested); return; }
+  if (requested && ROLES[requested]) {
+    chooseRole(requested);
+    return;
+  }
 
   let seen = false;
-  try { seen = sessionStorage.getItem('portfolio-booted') === '1'; } catch (e) { /* 無視 */ }
+  try {
+    seen = sessionStorage.getItem('portfolio-booted') === '1';
+  } catch (e) {
+    /* 無視 */
+  }
   runBoot(reduceMotion || params.has('noboot') || seen);
 }

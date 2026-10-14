@@ -10,7 +10,9 @@ function scramble(el, duration = 0.6) {
   const state = { p: 0 };
   gsap.killTweensOf(state);
   gsap.to(state, {
-    p: 1, duration, ease: 'none',
+    p: 1,
+    duration,
+    ease: 'none',
     onUpdate() {
       const fixed = Math.floor(state.p * final.length);
       let out = final.slice(0, fixed);
@@ -19,7 +21,9 @@ function scramble(el, duration = 0.6) {
       }
       el.textContent = out;
     },
-    onComplete() { el.textContent = final; }
+    onComplete() {
+      el.textContent = final;
+    }
   });
 }
 

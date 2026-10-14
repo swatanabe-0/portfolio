@@ -9,7 +9,9 @@ export function initBackground() {
   const count = innerWidth < 720 ? 50 : 110;
   const points = [];
   const mouse = { x: -9999, y: -9999 };
-  let w = 0, h = 0, dpr = 1;
+  let w = 0,
+    h = 0,
+    dpr = 1;
 
   function resize() {
     dpr = Math.min(devicePixelRatio, 2);
@@ -25,8 +27,10 @@ export function initBackground() {
 
   for (let i = 0; i < count; i++) {
     points.push({
-      x: Math.random() * w, y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.25 * dpr, vy: (Math.random() - 0.5) * 0.25 * dpr
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.25 * dpr,
+      vy: (Math.random() - 0.5) * 0.25 * dpr
     });
   }
 
@@ -34,10 +38,15 @@ export function initBackground() {
     ctx.clearRect(0, 0, w, h);
 
     for (const p of points) {
-      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const dx = p.x - mouse.x,
+        dy = p.y - mouse.y;
       const d = Math.hypot(dx, dy);
-      if (d < 160 * dpr) { p.vx += (dx / d) * 0.12; p.vy += (dy / d) * 0.12; }
-      p.vx *= 0.985; p.vy *= 0.985;
+      if (d < 160 * dpr) {
+        p.vx += (dx / d) * 0.12;
+        p.vy += (dy / d) * 0.12;
+      }
+      p.vx *= 0.985;
+      p.vy *= 0.985;
       p.x += p.vx + (Math.random() - 0.5) * 0.05;
       p.y += p.vy + (Math.random() - 0.5) * 0.05;
       if (p.x < 0) p.x = w;

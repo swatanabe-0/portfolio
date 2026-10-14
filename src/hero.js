@@ -42,13 +42,16 @@ export function initHero() {
 
   // 各文字の「元の位置」を測る
   function measure() {
-    letters.forEach((l) => { l.el.style.transform = ''; });
+    letters.forEach((l) => {
+      l.el.style.transform = '';
+    });
     const heroRect = hero.getBoundingClientRect();
     width = heroRect.width;
     floorY = 0;
     letters.forEach((l) => {
       const r = l.el.getBoundingClientRect();
-      const w = r.width * 0.92, h = r.height * 0.76;
+      const w = r.width * 0.92,
+        h = r.height * 0.76;
       l.home = { x: r.left - heroRect.left + r.width / 2, y: r.top - heroRect.top + r.height / 2, w, h };
       floorY = Math.max(floorY, l.home.y + h / 2);
     });
@@ -66,7 +69,10 @@ export function initHero() {
     ]);
     letters.forEach((l) => {
       l.body = Bodies.rectangle(l.home.x, l.home.y, l.home.w, l.home.h, {
-        chamfer: { radius: 6 }, restitution: 0.45, friction: 0.4, frictionAir: 0.01
+        chamfer: { radius: 6 },
+        restitution: 0.45,
+        friction: 0.4,
+        frictionAir: 0.01
       });
       Composite.add(engine.world, l.body);
       // 定位置で静止させる（解除時に質量を復元できるよう、一度動的に作ってから静的にする）
@@ -92,13 +98,22 @@ export function initHero() {
   function drop() {
     title.classList.add('on');
     if (reduceMotion) return;
-    if (!ready) { pendingDrop = true; return; }
-    if (tween) { tween.kill(); tween = null; }
+    if (!ready) {
+      pendingDrop = true;
+      return;
+    }
+    if (tween) {
+      tween.kill();
+      tween = null;
+    }
     letters.forEach((l) => {
       const b = l.body;
       Body.setStatic(b, false);
       const startY = -220 - (1 - l.lineIndex) * 380 - l.charIndex * 95 - Math.random() * 60;
-      const x = Math.min(Math.max(l.home.x + (Math.random() - 0.5) * 160, l.home.w / 2), width - l.home.w / 2);
+      const x = Math.min(
+        Math.max(l.home.x + (Math.random() - 0.5) * 160, l.home.w / 2),
+        width - l.home.w / 2
+      );
       Body.setPosition(b, { x, y: startY });
       Body.setAngle(b, (Math.random() - 0.5) * 1.4);
       Body.setVelocity(b, { x: 0, y: 0 });
@@ -110,13 +125,20 @@ export function initHero() {
 
   // 蹴散らす
   function kick(px, py) {
-    if (tween) { tween.kill(); tween = null; }
+    if (tween) {
+      tween.kill();
+      tween = null;
+    }
     letters.forEach((l) => {
       Body.setStatic(l.body, false);
-      const dx = l.body.position.x - px, dy = l.body.position.y - py;
+      const dx = l.body.position.x - px,
+        dy = l.body.position.y - py;
       const d = Math.max(Math.hypot(dx, dy), 1);
       const k = 14 * Math.max(0.3, 1 - d / 700);
-      Body.setVelocity(l.body, { x: (dx / d) * k + (Math.random() - 0.5) * 4, y: (dy / d) * k - 8 - Math.random() * 6 });
+      Body.setVelocity(l.body, {
+        x: (dx / d) * k + (Math.random() - 0.5) * 4,
+        y: (dy / d) * k - 8 - Math.random() * 6
+      });
       Body.setAngularVelocity(l.body, (Math.random() - 0.5) * 0.3);
     });
     mode = 'falling';
@@ -136,7 +158,9 @@ export function initHero() {
     letters.forEach((l) => Body.setStatic(l.body, true));
     const progress = { t: 0 };
     tween = gsap.to(progress, {
-      t: 1, duration: 1.1, ease: 'power3.inOut',
+      t: 1,
+      duration: 1.1,
+      ease: 'power3.inOut',
       onUpdate() {
         letters.forEach((l, i) => {
           const f = from[i];
@@ -151,7 +175,9 @@ export function initHero() {
       onComplete() {
         mode = 'rest';
         tween = null;
-        letters.forEach((l) => { l.el.style.transform = ''; });
+        letters.forEach((l) => {
+          l.el.style.transform = '';
+        });
       }
     });
   }
@@ -161,14 +187,16 @@ export function initHero() {
   hero.addEventListener('pointermove', (e) => {
     if (!ready || reduceMotion || e.pointerType === 'touch') return;
     const heroRect = hero.getBoundingClientRect();
-    const px = e.clientX - heroRect.left, py = e.clientY - heroRect.top;
+    const px = e.clientX - heroRect.left,
+      py = e.clientY - heroRect.top;
     const speed = last ? Math.hypot(px - last.x, py - last.y) : 0;
     last = { x: px, y: py };
 
     if (mode === 'falling') {
       // 動いている最中は、カーソルで押しのける
       letters.forEach((l) => {
-        const dx = l.body.position.x - px, dy = l.body.position.y - py;
+        const dx = l.body.position.x - px,
+          dy = l.body.position.y - py;
         const d = Math.hypot(dx, dy);
         if (d < 170 && d > 0) {
           const s = 0.8 + Math.min(speed, 30) * 0.08;
@@ -181,8 +209,9 @@ export function initHero() {
       resetIdle();
     } else if (speed > 2) {
       // 静止しているときは、文字に触れたら散らす
-      const near = letters.some((l) =>
-        Math.abs(px - l.home.x) < l.home.w / 2 + 8 && Math.abs(py - l.home.y) < l.home.h / 2 + 8);
+      const near = letters.some(
+        (l) => Math.abs(px - l.home.x) < l.home.w / 2 + 8 && Math.abs(py - l.home.y) < l.home.h / 2 + 8
+      );
       if (near) kick(px, py);
     }
   });
@@ -197,14 +226,19 @@ export function initHero() {
     Engine.update(engine, 1000 / 60);
     applyTransforms();
   });
-  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }).observe(hero);
+  new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+  }).observe(hero);
 
   let resizeTimer = null;
   addEventListener('resize', () => {
     if (!ready) return;
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      if (tween) { tween.kill(); tween = null; }
+      if (tween) {
+        tween.kill();
+        tween = null;
+      }
       clearTimeout(idleTimer);
       build();
     }, 150);
@@ -215,7 +249,10 @@ export function initHero() {
     document.fonts.ready.then(() => {
       build();
       ready = true;
-      if (pendingDrop) { pendingDrop = false; drop(); }
+      if (pendingDrop) {
+        pendingDrop = false;
+        drop();
+      }
     });
   }
 

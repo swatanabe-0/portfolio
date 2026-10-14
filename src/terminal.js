@@ -24,7 +24,10 @@ function printLink(label, href) {
   const a = document.createElement('a');
   a.href = href;
   a.textContent = label;
-  if (href.startsWith('http')) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+  if (href.startsWith('http')) {
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  }
   line.append(a);
   termOut.append(line);
   termBody.scrollTop = termBody.scrollHeight;
@@ -55,13 +58,15 @@ function hireMe() {
 }
 
 const COMMANDS = {
-  help: () => print(
-    'commands:\n  about      自己紹介\n  intern     インターン経験の概要\n  skills     スキル一覧\n  works      作品一覧\n  contact    連絡先\n  clear      画面をクリア\n  ???        ひとつだけ隠しコマンドがあります'
-  ),
+  help: () =>
+    print(
+      'commands:\n  about      自己紹介\n  intern     インターン経験の概要\n  skills     スキル一覧\n  works      作品一覧\n  contact    連絡先\n  clear      画面をクリア\n  ???        ひとつだけ隠しコマンドがあります'
+    ),
   about: () => print(`${PROFILE.name}\n${PROFILE.role}\n\n${ROLES.all.about.join('\n')}`),
-  intern: () => print(
-    '長期インターン（客先常駐）／業務効率化システムの開発\n期間: 2026年5月〜（継続中）  頻度: 週2〜3日\n体制: 開発メンバー2名 + アドバイザー2名\n技術: Python + Gemini API（OCR）/ GAS（スプレッドシート連携）\n詳細は Experience に載せています。'
-  ),
+  intern: () =>
+    print(
+      '長期インターン（客先常駐）／業務効率化システムの開発\n期間: 2026年5月〜（継続中）  頻度: 週2〜3日\n体制: 開発メンバー2名 + アドバイザー2名\n技術: Python + Gemini API（OCR）/ GAS（スプレッドシート連携）\n詳細は Experience に載せています。'
+    ),
   whoami: () => print(`guest（${ROLES[getCurrentRole()].label}の視点で閲覧中。右上の VIEW で切替できます）`),
   skills: () => print(SKILLS.map((s) => `- ${s.name}`).join('\n')),
   works: () => print('01 このポートフォリオサイト\n   （制作過程は Works に載せています）'),
@@ -69,7 +74,9 @@ const COMMANDS = {
     print(`email : ${PROFILE.email}`);
     printLink(`github: ${PROFILE.github}`, PROFILE.github);
   },
-  clear: () => { termOut.innerHTML = ''; },
+  clear: () => {
+    termOut.innerHTML = '';
+  },
   ls: () => print('about.txt  skills.json  works/  secret.sh'),
   'cat secret.sh': () => print('#!/bin/sh\n# ヒント: sudo のあとに、あなたがやりたいことを。'),
   sudo: () => print('usage: sudo <command>\n（このサイトの管理者権限で、やりたいことは何でしょう？）'),
@@ -95,10 +102,16 @@ export function initTerminal() {
       if (command) command();
       else print(`command not found: ${raw}（help で一覧）`);
     } else if (e.key === 'ArrowUp') {
-      if (historyIndex > 0) { historyIndex--; termInput.value = history[historyIndex]; }
+      if (historyIndex > 0) {
+        historyIndex--;
+        termInput.value = history[historyIndex];
+      }
       e.preventDefault();
     } else if (e.key === 'ArrowDown') {
-      if (historyIndex < history.length) { historyIndex++; termInput.value = history[historyIndex] || ''; }
+      if (historyIndex < history.length) {
+        historyIndex++;
+        termInput.value = history[historyIndex] || '';
+      }
       e.preventDefault();
     } else if (e.key === 'Escape') {
       termInput.blur();

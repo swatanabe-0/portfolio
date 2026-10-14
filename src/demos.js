@@ -22,7 +22,8 @@ function mountThree(view, setCode) {
 
   import('three').then((THREE) => {
     if (dead) return;
-    const w = view.clientWidth, ht = view.clientHeight;
+    const w = view.clientWidth,
+      ht = view.clientHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.setSize(w, ht);
@@ -41,36 +42,55 @@ function mountThree(view, setCode) {
     const geo = new THREE.BoxGeometry(1.5, 1.5, 1.5);
     const mat = new THREE.MeshStandardMaterial({ color: '#7cf5c4', roughness: 0.28, metalness: 0.35 });
     const cube = new THREE.Mesh(geo, mat);
-    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: '#0b0c10' }));
+    const edges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(geo),
+      new THREE.LineBasicMaterial({ color: '#0b0c10' })
+    );
     cube.add(edges);
     cube.rotation.set(0.5, 0.7, 0);
     scene.add(cube);
 
-    let dragging = false, lastX = 0, lastY = 0;
-    const down = (e) => { dragging = true; lastX = e.clientX; lastY = e.clientY; el.setPointerCapture(e.pointerId); };
+    let dragging = false,
+      lastX = 0,
+      lastY = 0;
+    const down = (e) => {
+      dragging = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      el.setPointerCapture(e.pointerId);
+    };
     const move = (e) => {
       if (!dragging) return;
       cube.rotation.y += (e.clientX - lastX) * 0.01;
       cube.rotation.x += (e.clientY - lastY) * 0.01;
-      lastX = e.clientX; lastY = e.clientY;
+      lastX = e.clientX;
+      lastY = e.clientY;
     };
-    const up = () => { dragging = false; };
+    const up = () => {
+      dragging = false;
+    };
     el.addEventListener('pointerdown', down);
     el.addEventListener('pointermove', move);
     el.addEventListener('pointerup', up);
     el.addEventListener('pointercancel', up);
 
     const loop = () => {
-      if (!dragging) { cube.rotation.y += 0.01; cube.rotation.x += 0.003; }
+      if (!dragging) {
+        cube.rotation.y += 0.01;
+        cube.rotation.x += 0.003;
+      }
       renderer.render(scene, camera);
       raf = requestAnimationFrame(loop);
     };
     loop();
 
     dispose = () => {
-      geo.dispose(); mat.dispose();
-      edges.geometry.dispose(); edges.material.dispose();
-      renderer.dispose(); el.remove();
+      geo.dispose();
+      mat.dispose();
+      edges.geometry.dispose();
+      edges.material.dispose();
+      renderer.dispose();
+      el.remove();
     };
   });
 
@@ -89,7 +109,12 @@ function mountGsap(view, setCode) {
   const row = h('div', 'mini-row');
   view.append(track, row);
 
-  const eases = [['linear', 'none'], ['power2', 'power2.out'], ['bounce', 'bounce.out'], ['elastic', 'elastic.out(1, 0.4)']];
+  const eases = [
+    ['linear', 'none'],
+    ['power2', 'power2.out'],
+    ['bounce', 'bounce.out'],
+    ['elastic', 'elastic.out(1, 0.4)']
+  ];
   const btns = eases.map(([label, ease]) => {
     const b = miniBtn(label, () => play(ease, b));
     row.append(b);
@@ -125,23 +150,46 @@ function mountGit(view, setCode) {
   };
 
   const P = { A: [30, 36], B: [95, 36], C: [160, 36], M: [300, 36], F1: [160, 96], F2: [230, 96] };
-  const mainColor = '#7cf5c4', featureColor = '#ffb86b';
-  const edge = (a, b, color) => make('line', {
-    x1: P[a][0], y1: P[a][1], x2: P[b][0], y2: P[b][1],
-    stroke: color, 'stroke-width': 3, 'stroke-linecap': 'round', opacity: 0
-  });
+  const mainColor = '#7cf5c4',
+    featureColor = '#ffb86b';
+  const edge = (a, b, color) =>
+    make('line', {
+      x1: P[a][0],
+      y1: P[a][1],
+      x2: P[b][0],
+      y2: P[b][1],
+      stroke: color,
+      'stroke-width': 3,
+      'stroke-linecap': 'round',
+      opacity: 0
+    });
   const node = (k, color) => make('circle', { cx: P[k][0], cy: P[k][1], r: 9, fill: color, opacity: 0 });
 
   const edges = [
-    edge('A', 'B', mainColor), edge('B', 'C', mainColor), edge('C', 'M', mainColor),
-    edge('B', 'F1', featureColor), edge('F1', 'F2', featureColor), edge('F2', 'M', featureColor)
+    edge('A', 'B', mainColor),
+    edge('B', 'C', mainColor),
+    edge('C', 'M', mainColor),
+    edge('B', 'F1', featureColor),
+    edge('F1', 'F2', featureColor),
+    edge('F2', 'M', featureColor)
   ];
   const nodes = {
-    A: node('A', mainColor), B: node('B', mainColor), C: node('C', mainColor), M: node('M', mainColor),
-    F1: node('F1', featureColor), F2: node('F2', featureColor)
+    A: node('A', mainColor),
+    B: node('B', mainColor),
+    C: node('C', mainColor),
+    M: node('M', mainColor),
+    F1: node('F1', featureColor),
+    F2: node('F2', featureColor)
   };
-  make('text', { x: 10, y: 14, fill: mainColor, 'font-size': 11, 'font-family': 'monospace' }).textContent = 'main';
-  make('text', { x: 10, y: 124, fill: featureColor, 'font-size': 11, 'font-family': 'monospace' }).textContent = 'feature';
+  make('text', { x: 10, y: 14, fill: mainColor, 'font-size': 11, 'font-family': 'monospace' }).textContent =
+    'main';
+  make('text', {
+    x: 10,
+    y: 124,
+    fill: featureColor,
+    'font-size': 11,
+    'font-family': 'monospace'
+  }).textContent = 'feature';
 
   const row = h('div', 'mini-row');
   view.append(row);
@@ -153,15 +201,24 @@ function mountGit(view, setCode) {
     gsap.set(Object.values(nodes), { transformOrigin: '50% 50%', scale: 0 });
     tl = gsap.timeline({ defaults: { duration: 0.35, ease: 'power2.out' } });
     const pop = (k) => tl.to(nodes[k], { opacity: 1, scale: 1 });
-    pop('A'); tl.to(edges[0], { opacity: 1 }, '<0.1'); pop('B');
-    tl.to(edges[3], { opacity: 1 }); pop('F1'); tl.to(edges[4], { opacity: 1 }, '<0.1'); pop('F2');
-    tl.to(edges[1], { opacity: 1 }, '-=0.3'); pop('C');
-    tl.to([edges[2], edges[5]], { opacity: 1 }); pop('M');
+    pop('A');
+    tl.to(edges[0], { opacity: 1 }, '<0.1');
+    pop('B');
+    tl.to(edges[3], { opacity: 1 });
+    pop('F1');
+    tl.to(edges[4], { opacity: 1 }, '<0.1');
+    pop('F2');
+    tl.to(edges[1], { opacity: 1 }, '-=0.3');
+    pop('C');
+    tl.to([edges[2], edges[5]], { opacity: 1 });
+    pop('M');
   }
   row.append(miniBtn('もう一度', play));
   play();
 
-  return () => { if (tl) tl.kill(); };
+  return () => {
+    if (tl) tl.kill();
+  };
 }
 
 // --- Node.js：APIにリクエストを送ると、JSONが返る ---
@@ -172,7 +229,10 @@ function mountNode(view, setCode) {
   view.append(out, row);
 
   let timers = [];
-  const clear = () => { timers.forEach(clearTimeout); timers = []; };
+  const clear = () => {
+    timers.forEach(clearTimeout);
+    timers = [];
+  };
   const send = () => {
     clear();
     const lines = [
@@ -185,7 +245,16 @@ function mountNode(view, setCode) {
       '}'
     ];
     out.textContent = '';
-    lines.forEach((line, i) => timers.push(setTimeout(() => { out.textContent += (i ? '\n' : '') + line; }, 250 + i * 220)));
+    lines.forEach((line, i) =>
+      timers.push(
+        setTimeout(
+          () => {
+            out.textContent += (i ? '\n' : '') + line;
+          },
+          250 + i * 220
+        )
+      )
+    );
   };
   row.append(miniBtn('GET /api/profile を送る', send));
 
@@ -201,7 +270,10 @@ function mountTs(view, setCode) {
   view.append(code, msg, row);
 
   let broken = true;
-  const btn = miniBtn('直す', () => { broken = !broken; render(); });
+  const btn = miniBtn('直す', () => {
+    broken = !broken;
+    render();
+  });
   row.append(btn);
 
   function render() {
@@ -216,7 +288,9 @@ function mountTs(view, setCode) {
       : '✓ 型チェック通過：エラーはありません';
     msg.className = 'ts-msg ' + (broken ? 'bad' : 'good');
     btn.textContent = broken ? '直す' : '壊す';
-    setCode(`// 実行する前に、エディタが間違いを教えてくれる\nconst age: number = ${broken ? '"20"' : '20'};`);
+    setCode(
+      `// 実行する前に、エディタが間違いを教えてくれる\nconst age: number = ${broken ? '"20"' : '20'};`
+    );
   }
   render();
 
@@ -234,10 +308,16 @@ function mountCss(view, setCode) {
     preview.style.borderRadius = state.r + 'px';
     preview.style.boxShadow = `0 ${state.s / 2}px ${state.s}px rgba(0,0,0,.55)`;
     preview.style.background = `hsl(${state.hue} 70% 62%)`;
-    setCode(`.card {\n  border-radius: ${state.r}px;\n  box-shadow: 0 ${state.s / 2}px ${state.s}px rgba(0,0,0,.55);\n  background: hsl(${state.hue} 70% 62%);\n}`);
+    setCode(
+      `.card {\n  border-radius: ${state.r}px;\n  box-shadow: 0 ${state.s / 2}px ${state.s}px rgba(0,0,0,.55);\n  background: hsl(${state.hue} 70% 62%);\n}`
+    );
   }
 
-  [['角丸', 'r', 0, 60], ['影', 's', 0, 48], ['色相', 'hue', 0, 360]].forEach(([label, key, min, max]) => {
+  [
+    ['角丸', 'r', 0, 60],
+    ['影', 's', 0, 48],
+    ['色相', 'hue', 0, 360]
+  ].forEach(([label, key, min, max]) => {
     const wrap = h('label', 'css-ctl');
     wrap.append(h('span', null, label));
     const input = document.createElement('input');
@@ -245,7 +325,10 @@ function mountCss(view, setCode) {
     input.min = min;
     input.max = max;
     input.value = state[key];
-    input.addEventListener('input', () => { state[key] = +input.value; apply(); });
+    input.addEventListener('input', () => {
+      state[key] = +input.value;
+      apply();
+    });
     wrap.append(input);
     controls.append(wrap);
   });
@@ -275,16 +358,19 @@ function mountVite(view, setCode) {
   };
   row.append(miniBtn('ビルドを実行', run));
 
-  return () => { clearTimeout(timer); gsap.killTweensOf(fill); };
+  return () => {
+    clearTimeout(timer);
+    gsap.killTweensOf(fill);
+  };
 }
 
 /** スキル名 → デモ。ここに無いスキルは、説明文だけを表示する */
 export const DEMOS = {
   'Three.js': mountThree,
-  'GSAP': mountGsap,
+  GSAP: mountGsap,
   'Git / GitHub': mountGit,
   'Node.js': mountNode,
-  'TypeScript': mountTs,
+  TypeScript: mountTs,
   'HTML / CSS': mountCss,
-  'Vite': mountVite
+  Vite: mountVite
 };

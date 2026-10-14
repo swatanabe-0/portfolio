@@ -9,9 +9,13 @@ export function confetti() {
 
   const colors = ['#7cf5c4', '#ffb86b', '#ecedf0', '#6ea8ff', '#ff7ab6'];
   const pieces = Array.from({ length: 160 }, () => ({
-    x: innerWidth / 2, y: innerHeight * 0.7,
-    vx: (Math.random() - 0.5) * 18, vy: -Math.random() * 20 - 6,
-    size: Math.random() * 8 + 4, rot: Math.random() * 6, vrot: (Math.random() - 0.5) * 0.4,
+    x: innerWidth / 2,
+    y: innerHeight * 0.7,
+    vx: (Math.random() - 0.5) * 18,
+    vy: -Math.random() * 20 - 6,
+    size: Math.random() * 8 + 4,
+    rot: Math.random() * 6,
+    vrot: (Math.random() - 0.5) * 0.4,
     color: colors[(Math.random() * colors.length) | 0]
   }));
 

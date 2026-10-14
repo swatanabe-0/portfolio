@@ -15,7 +15,10 @@ let DEMOS = {};
 let demoCleanup = null;
 
 function showInfo(skill) {
-  if (demoCleanup) { demoCleanup(); demoCleanup = null; }
+  if (demoCleanup) {
+    demoCleanup();
+    demoCleanup = null;
+  }
   info.innerHTML = '';
   const head = h('div', 'info-head');
   head.append(h('b', null, skill.name), document.createTextNode(skill.desc));
@@ -28,7 +31,9 @@ function showInfo(skill) {
   const codeBox = h('pre', 'demo-code');
   wrap.append(view, codeBox);
   info.append(wrap);
-  demoCleanup = demo(view, (text) => { codeBox.textContent = text; });
+  demoCleanup = demo(view, (text) => {
+    codeBox.textContent = text;
+  });
 
   // 画面外にあるときは、デモが見える位置までスクロール
   requestAnimationFrame(() => {
@@ -76,7 +81,8 @@ async function startPhysics() {
   const engine = Engine.create();
   engine.gravity.y = 1;
   const world = engine.world;
-  let W = stage.clientWidth, H = stage.clientHeight;
+  let W = stage.clientWidth,
+    H = stage.clientHeight;
 
   let walls = [];
   function buildWalls() {
@@ -96,12 +102,14 @@ async function startPhysics() {
     el.className = 'badge' + (s.hl === 1 ? ' hl' : s.hl === 2 ? ' hl2' : '');
     el.textContent = s.name + (DEMOS[s.name] ? ' ▶' : '');
     stage.append(el);
-    const bw = el.offsetWidth, bh = el.offsetHeight;
-    const body = Bodies.rectangle(
-      60 + Math.random() * Math.max(W - 120, 10),
-      -60 - i * 80, bw, bh,
-      { chamfer: { radius: bh / 2 }, restitution: 0.35, friction: 0.3, frictionAir: 0.01 }
-    );
+    const bw = el.offsetWidth,
+      bh = el.offsetHeight;
+    const body = Bodies.rectangle(60 + Math.random() * Math.max(W - 120, 10), -60 - i * 80, bw, bh, {
+      chamfer: { radius: bh / 2 },
+      restitution: 0.35,
+      friction: 0.3,
+      frictionAir: 0.01
+    });
     Body.setAngle(body, (Math.random() - 0.5) * 1.2);
     Composite.add(world, body);
     return { el, body, bw, bh, skill: s };
@@ -115,7 +123,10 @@ async function startPhysics() {
   stage.removeEventListener('touchmove', mouse.mousemove);
   stage.removeEventListener('touchstart', mouse.mousedown);
   stage.removeEventListener('touchend', mouse.mouseup);
-  const mouseConstraint = MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.2, render: { visible: false } } });
+  const mouseConstraint = MouseConstraint.create(engine, {
+    mouse,
+    constraint: { stiffness: 0.2, render: { visible: false } }
+  });
   Composite.add(world, mouseConstraint);
 
   let drag = null; // { item, id, tx, ty, ox, oy }
@@ -130,10 +141,18 @@ async function startPhysics() {
     if (!item) return;
     const p = toStage(e);
     drag = {
-      item, id: e.pointerId, tx: p.x, ty: p.y,
-      ox: item.body.position.x - p.x, oy: item.body.position.y - p.y
+      item,
+      id: e.pointerId,
+      tx: p.x,
+      ty: p.y,
+      ox: item.body.position.x - p.x,
+      oy: item.body.position.y - p.y
     };
-    try { stage.setPointerCapture(e.pointerId); } catch (err) { /* 非対応環境では無視 */ }
+    try {
+      stage.setPointerCapture(e.pointerId);
+    } catch (err) {
+      /* 非対応環境では無視 */
+    }
   });
   stage.addEventListener('pointermove', (e) => {
     if (!drag || e.pointerId !== drag.id) return;
@@ -154,7 +173,9 @@ async function startPhysics() {
 
   // クリック（タップ）判定：ドラッグと区別する
   let down = null;
-  stage.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, t: performance.now() }; });
+  stage.addEventListener('pointerdown', (e) => {
+    down = { x: e.clientX, y: e.clientY, t: performance.now() };
+  });
   stage.addEventListener('pointerup', (e) => {
     if (!down) return;
     const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
@@ -162,7 +183,10 @@ async function startPhysics() {
     down = null;
     if (moved > 10 || elapsed > 600) return;
     const r = stage.getBoundingClientRect();
-    const hit = Query.point(items.map((i) => i.body), { x: e.clientX - r.left, y: e.clientY - r.top })[0];
+    const hit = Query.point(
+      items.map((i) => i.body),
+      { x: e.clientX - r.left, y: e.clientY - r.top }
+    )[0];
     const item = items.find((i) => i.body === hit);
     if (item) showInfo(item.skill);
   });
@@ -181,7 +205,7 @@ async function startPhysics() {
     }
     for (const it of items) {
       // 逆さまで止まると読めないので、ごく弱く正位置へ戻す
-      const a = ((it.body.angle + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+      const a = ((((it.body.angle + Math.PI) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) - Math.PI;
       Body.setAngularVelocity(it.body, it.body.angularVelocity - a * 0.004);
       const { x, y } = it.body.position;
       it.el.style.transform = `translate(${x - it.bw / 2}px, ${y - it.bh / 2}px) rotate(${it.body.angle}rad)`;
@@ -200,11 +224,14 @@ export function initSkills() {
 
   // 画面に入ったら物理を開始する。
   // リロード時のスクロール復元でも確実に発火させるため、ScrollTrigger ではなく IntersectionObserver を使う
-  const observer = new IntersectionObserver((entries) => {
-    if (!entries.some((en) => en.isIntersecting)) return;
-    observer.disconnect();
-    if (!reduceMotion && !skillsSection.classList.contains('list-mode')) startPhysics();
-  }, { rootMargin: '0px 0px -25% 0px' });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (!entries.some((en) => en.isIntersecting)) return;
+      observer.disconnect();
+      if (!reduceMotion && !skillsSection.classList.contains('list-mode')) startPhysics();
+    },
+    { rootMargin: '0px 0px -25% 0px' }
+  );
   observer.observe(skillsSection);
 
   $('#viewToggle').addEventListener('click', () => {

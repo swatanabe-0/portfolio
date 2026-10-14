@@ -7,7 +7,11 @@ export const SKILLS = [
   { name: 'GAS', hl: 1, desc: 'インターンで、スプレッドシートとの連携に使用。' },
   { name: 'Python', hl: 1, desc: 'インターンで、Gemini API を呼び出すOCR処理に使用。' },
   { name: 'Gemini API', hl: 1, desc: 'インターンで、OCR処理（データの読み取り）に使用。' },
-  { name: '生成AI活用', hl: 1, desc: 'インターンで、開発の効率化のために導入。プロンプトの改善と、出力の検証を担当。' },
+  {
+    name: '生成AI活用',
+    hl: 1,
+    desc: 'インターンで、開発の効率化のために導入。プロンプトの改善と、出力の検証を担当。'
+  },
   { name: 'JavaScript', desc: 'このサイトの動き・物理演算・ターミナルを実装。' },
   { name: 'HTML / CSS', desc: 'このサイトのレイアウトと見た目を実装。' },
   { name: 'Three.js', desc: 'このサイトのミニデモ（3D立方体）で使用。' },
