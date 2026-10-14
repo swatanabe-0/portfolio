@@ -134,6 +134,8 @@ body[data-role="exec"] .note-exec { display: block; }
   touch-action: pan-y; user-select: none;
 }
 .badge {
+  /* バッジの上から始めた指は、スクロールではなく「掴む」操作にする */
+  touch-action: none; cursor: grab;
   position: absolute; top: 0; left: 0; will-change: transform;
   display: flex; align-items: center; justify-content: center;
   border-radius: 99px; padding: 0 22px; height: 52px;

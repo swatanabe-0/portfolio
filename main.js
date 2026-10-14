@@ -574,16 +574,49 @@ function startPhysics() {
     return { el, body, bw, bh, skill: s };
   });
 
-  // マウスで掴んで投げる（タッチはスクロール優先のためここでは無効）
+  // 掴んで投げる
+  //  - マウス：Matter のマウス拘束で掴む
+  //  - タッチ：バッジの上から始めたときだけ、自前のドラッグで掴む（空いている場所はページのスクロールを妨げない）
   const mouse = Mouse.create(stage);
   ['mousewheel', 'DOMMouseScroll', 'wheel'].forEach((ev) => stage.removeEventListener(ev, mouse.mousewheel));
-  if (!finePointer) {
-    stage.removeEventListener('touchmove', mouse.mousemove);
-    stage.removeEventListener('touchstart', mouse.mousedown);
-    stage.removeEventListener('touchend', mouse.mouseup);
-  }
+  stage.removeEventListener('touchmove', mouse.mousemove);
+  stage.removeEventListener('touchstart', mouse.mousedown);
+  stage.removeEventListener('touchend', mouse.mouseup);
   const mc = MouseConstraint.create(engine, { mouse, constraint: { stiffness: 0.2, render: { visible: false } } });
   Composite.add(world, mc);
+
+  let drag = null; // { item, id, tx, ty, ox, oy }
+  const toStage = (e) => {
+    const r = stage.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  };
+  stage.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse') return;
+    const el = e.target.closest('.badge');
+    const item = el && items.find((i) => i.el === el);
+    if (!item) return;
+    const p = toStage(e);
+    drag = {
+      item, id: e.pointerId, tx: p.x, ty: p.y,
+      ox: item.body.position.x - p.x, oy: item.body.position.y - p.y
+    };
+    try { stage.setPointerCapture(e.pointerId); } catch (err) { /* 非対応環境では無視 */ }
+  });
+  stage.addEventListener('pointermove', (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const p = toStage(e);
+    drag.tx = p.x; drag.ty = p.y;
+  });
+  const endDrag = (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    // 離した勢いでそのまま投げる（速すぎる場合は上限をかける）
+    const b = drag.item.body;
+    const s = Math.hypot(b.velocity.x, b.velocity.y);
+    if (s > 30) Body.setVelocity(b, { x: (b.velocity.x * 30) / s, y: (b.velocity.y * 30) / s });
+    drag = null;
+  };
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
 
   // クリック判定（ドラッグと区別）
   let down = null;
@@ -604,6 +637,15 @@ function startPhysics() {
   Runner.run(runner, engine);
 
   gsap.ticker.add(() => {
+    // タッチで掴んでいるバッジは、指の位置へ引き寄せる
+    if (drag) {
+      const b = drag.item.body;
+      Body.setVelocity(b, {
+        x: (drag.tx + drag.ox - b.position.x) * 0.35,
+        y: (drag.ty + drag.oy - b.position.y) * 0.35
+      });
+      Body.setAngularVelocity(b, b.angularVelocity * 0.7);
+    }
     for (const it of items) {
       // 逆さまで止まると読めないので、ごく弱く正位置へ戻す
       const a = ((it.body.angle + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
