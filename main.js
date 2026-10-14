@@ -19,6 +19,7 @@ const SKILLS = [
   { name: 'GAS', hl: 1, desc: 'インターンで、スプレッドシートとの連携に使用。' },
   { name: 'Python', hl: 1, desc: 'インターンで、Gemini API を呼び出すOCR処理に使用。' },
   { name: 'Gemini API', hl: 1, desc: 'インターンで、OCR処理（データの読み取り）に使用。' },
+  { name: '生成AI活用', hl: 1, desc: 'インターンで、開発スピード向上のために導入。プロンプトの改善と、出力コードの検証・修正を担当。' },
   { name: 'JavaScript', desc: 'このサイトの動き・物理演算・ターミナルを実装。' },
   { name: 'HTML / CSS', desc: 'このサイトのレイアウトと見た目を実装。' },
   { name: 'Three.js', desc: 'このサイトのミニデモ（3D立方体）で使用。' },
@@ -35,32 +36,32 @@ const PROFILE = {
 };
 
 // 閲覧者の立場ごとの見せ方（順序・キャッチコピー・About文）
-const SECTION_LABELS = { about: 'ABOUT', experience: 'EXPERIENCE', skills: 'SKILLS', works: 'WORKS' };
+const SECTION_LABELS = { about: 'ABOUT', timeline: 'TIMELINE', experience: 'EXPERIENCE', skills: 'SKILLS', works: 'WORKS' };
 const ROLES = {
   hr: {
     label: '人事・採用',
     sub: '人の話をよく聞いて、現場に寄り添う開発をしています。',
-    order: ['about', 'experience', 'works', 'skills'],
+    order: ['about', 'timeline', 'experience', 'works', 'skills'],
     about: [
-      '長期インターンで客先に常駐し、約4か月続けています。人の話を聞くことが得意だと言われます。',
-      'ITに不慣れな相手とも、聞き取りを何度も重ねながら、一緒にシステムを形にしてきました。',
+      '長期インターンで客先に常駐し、2026年5月から続けています。人の話を聞くことが得意だと言われます。',
+      '3大学合同の開発チームでは、議論が止まりがちな場に、話しやすい作業部屋と質問できる場を作り、1年で成果物を完成させました。',
       '自分が作ったもので、誰かが「楽になった」と感じてくれることが、ものづくりの一番の動機です。'
     ]
   },
   engineer: {
     label: '現場エンジニア',
     sub: 'OCRによる自動転記の仕組みを、要件定義から運用・保守まで担当しています。',
-    order: ['skills', 'experience', 'works', 'about'],
+    order: ['skills', 'experience', 'works', 'timeline', 'about'],
     about: [
       'Python と Gemini API でOCR処理を行い、GAS でスプレッドシートに連携する仕組みを作っています。',
       '開発メンバー2名のうちの1人として、要件定義から開発・運用・保守までを担当しています。',
-      '実務未経験の状態から手探りで始め、調べて、試して、直すことで進めてきました。'
+      '開発スピード向上のため生成AIを導入し、プロンプトの改善と出力コードの検証を繰り返して、実務で使える進め方を作りました。'
     ]
   },
   exec: {
     label: '経営・マネージャー',
     sub: '現場に入り、課題を聞き出して、業務を楽にする仕組みを作ります。',
-    order: ['experience', 'works', 'about', 'skills'],
+    order: ['experience', 'works', 'timeline', 'about', 'skills'],
     about: [
       '長期インターンで客先に常駐し、現場の業務効率化システムを開発しています。',
       '途中参加の案件でも、クライアントの要望に立ち返って方針を見直し、本当に求められていることに応える形へ変えました。',
@@ -72,7 +73,7 @@ const ROLES = {
 ROLES.all = {
   label: 'すべて',
   sub: $('.hero-sub').textContent,
-  order: ['about', 'experience', 'skills', 'works'],
+  order: ['about', 'timeline', 'experience', 'skills', 'works'],
   about: $$('.about-text .reveal').map((p) => p.textContent)
 };
 let currentRole = 'all';
@@ -699,7 +700,7 @@ const COMMANDS = {
   ),
   about: () => print(`${PROFILE.name}\n${PROFILE.role}\n\n${ROLES.all.about.join('\n')}`),
   intern: () => print(
-    '長期インターン（客先常駐）／業務効率化システムの開発\n期間: 約4か月（継続中）  頻度: 週2〜3日\n体制: 開発メンバー2名 + アドバイザー2名\n技術: Python + Gemini API（OCR）/ GAS（スプレッドシート連携）\n詳細は Experience に載せています。'
+    '長期インターン（客先常駐）／業務効率化システムの開発\n期間: 2026年5月〜（継続中）  頻度: 週2〜3日\n体制: 開発メンバー2名 + アドバイザー2名\n技術: Python + Gemini API（OCR）/ GAS（スプレッドシート連携）\n詳細は Experience に載せています。'
   ),
   whoami: () => print(`guest（${ROLES[currentRole].label}の視点で閲覧中。右上の VIEW で切替できます）`),
   skills: () => print(SKILLS.map((s) => `- ${s.name}`).join('\n')),
