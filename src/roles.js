@@ -47,10 +47,20 @@ function applyRole(key) {
   $('#roleChip').textContent = `VIEW: ${role.label}`;
 }
 
+/**
+ * 選択画面にフォーカスを移す（キーボード・スクリーンリーダー向け）。
+ * カードではなく、画面の枠（ダイアログ）にフォーカスを当てる。
+ * 最初のカードに当てると、「そのカードだけ、常に選択されているように」見えてしまうため。
+ * Tab キーを押したときは、これまで通り、カードにフォーカスの枠が出る。
+ */
+function focusDialog() {
+  roleEl.focus({ preventScroll: true });
+}
+
 function showChoices() {
   roleEl.classList.remove('is-loading');
   roleChoose.inert = false;
-  $('.role-card', roleEl).focus({ preventScroll: true });
+  focusDialog();
 }
 
 /** VIEW チップから開き直すとき（ブートなし） */
@@ -60,7 +70,7 @@ function openRole() {
   roleEl.setAttribute('aria-hidden', 'false');
   roleChoose.inert = false;
   if (lenis) lenis.stop();
-  $('.role-card', roleEl).focus({ preventScroll: true });
+  focusDialog();
 }
 
 /** 初回表示：短いブート（約1.4秒）の後、同じ画面にロール選択を出す */

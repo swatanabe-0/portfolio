@@ -191,6 +191,10 @@ h2 {
     transform 0.2s,
     background 0.2s;
 }
+/* 画面の枠自体にフォーカスが当たったときは、枠線を出さない（カードの Tab 操作では、下のルールで表示する） */
+.role:focus {
+  outline: 0;
+}
 .role-card:hover,
 .role-card:focus-visible {
   border-color: var(--accent);
