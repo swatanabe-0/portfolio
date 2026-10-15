@@ -204,6 +204,13 @@
             <dd>開発の効率化のため、生成AIを開発工程に取り入れる役割を担った。プロンプトの改善と出力の検証を繰り返し、実務で使える進め方を作って、システムの構築を完了した。</dd>
             <dt>苦労</dt>
             <dd>実務が初めての状態で、早い段階で一人で常駐先に入ることになり、すべてが手探りだった。</dd>
+            <dt>公開サンプル</dt>
+            <dd>
+              読み取りと正規化の考え方を、架空のレシートを題材に、ゼロから書き直して公開しています（業務のコードやデータは含みません）。
+              <a href="https://github.com/swatanabe-0/receipt-normalizer" target="_blank" rel="noopener noreferrer"
+                >receipt-normalizer →</a
+              >
+            </dd>
           </dl>
           <div class="tags"><span>GAS</span><span>Python</span><span>Gemini API</span><span>OCR</span></div>
           <p class="note note-hr">人柄：相手が話しやすいよう、聞き取りを重ねて、方針のズレを早めに確かめました。</p>
@@ -229,7 +236,7 @@
     <section class="works" id="works">
       <p class="eyebrow">03 — WORKS</p>
       <h2>Selected Works</h2>
-      <p class="works-lead">現時点で公開できる作品は、このサイトだけです（インターンでの開発物は守秘のため非公開で、Experience に概要を載せています）。完成形だけでなく、作り直した経緯も含めて載せています。</p>
+      <p class="works-lead">公開できる作品は、このサイトと、技術サンプルの2つです（インターンでの開発物は守秘のため非公開で、Experience に概要を載せています）。完成形だけでなく、作り直した経緯も含めて載せています。</p>
       <div class="cards">
         <article class="card card-wide">
           <span class="num">01</span>
@@ -251,6 +258,46 @@
           <p class="note note-hr">人柄：最初の案を「面白みが足りない」と判断して、作り直す決断を2回しました。</p>
           <p class="note note-eng">技術：文字の落下と整列は Matter.js と GSAP で状態遷移を自作。Three.js は必要になったときだけ読み込みます。</p>
           <p class="note note-exec">狙い：閲覧者の立場に合わせて並びと文言を変え、短い時間で必要な情報に届くようにしました。</p>
+        </article>
+
+        <article class="card card-wide">
+          <span class="num">02</span>
+          <h3>receipt-normalizer（技術サンプル）</h3>
+          <p class="card-sum">
+            形式の異なるレシート画像を、共通のスキーマに正規化して、データベースに取り込む最小構成のサンプルです。
+          </p>
+          <dl class="work-dl">
+            <dt>課題</dt>
+            <dd>発行元ごとに書式がバラバラな帳票を、1つのデータベースにまとめたい。</dd>
+            <dt>設計</dt>
+            <dd>
+              読み取りはモデルに任せ、日付や金額の変換と検証は、テストできるコードで行う。疑わしい結果は「要確認」の印を付けて黙って取り込まず、同じファイルは二重に登録しない。
+            </dd>
+            <dt>検証</dt>
+            <dd>読み取り部分をモックにしたテストと、GitHub Actions による自動チェック。</dd>
+            <dt>状況</dt>
+            <dd>
+              実際の Gemini API で、ダミーのレシート6枚を読み取り、画像の内容と一致することを確認しました。その過程で、数字の誤読（890円を8円と登録していた）や、回数制限・サーバー不調への対応不足を見つけて、修正しています。実際の撮影画像での精度は、評価していません。
+            </dd>
+          </dl>
+          <div class="tags">
+            <span>Python</span><span>Gemini API</span><span>SQLite</span><span>pytest</span
+            ><span>GitHub Actions</span>
+          </div>
+          <p class="work-links">
+            <a href="https://github.com/swatanabe-0/receipt-normalizer" target="_blank" rel="noopener noreferrer"
+              >GitHub で見る →</a
+            >
+          </p>
+          <p class="note note-hr">
+            人柄：業務で学んだ考え方を、守秘に配慮しながら、公開できる形に作り直しました。
+          </p>
+          <p class="note note-eng">
+            技術：変換と検証を、テストできるコードに分離。読み取りの再試行、冪等な取り込み、CI まで用意し、実際の API で見つかった不具合も修正しました。
+          </p>
+          <p class="note note-exec">
+            狙い：読み取りの誤りを、黙って取り込まず、人が確認できる形にすること。
+          </p>
         </article>
       </div>
     </section>
@@ -292,7 +339,7 @@
         <dt>経験</dt><dd>長期インターン（客先常駐、2026年5月〜・継続中）：業務効率化システムの開発。要件定義から運用・保守まで担当</dd>
         <dt>強み</dt><dd>周囲を俯瞰して課題を見つけ、聞き取りやチームの環境づくりを通じて、使う人が楽になる形にすること<br>未知の課題にも粘り強く向き合い、検証と改善を繰り返してやり切ること</dd>
         <dt>スキル</dt><dd>GAS / Python / Gemini API / JavaScript</dd>
-        <dt>成果物</dt><dd>このポートフォリオサイト（制作過程を Works に掲載）</dd>
+        <dt>成果物</dt><dd>このポートフォリオサイト／receipt-normalizer（技術サンプル。Works に掲載）</dd>
         <dt>連絡先</dt><dd>s.watanabe991177@gmail.com</dd>
       </dl>
     </div>

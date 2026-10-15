@@ -69,7 +69,12 @@ const COMMANDS = {
     ),
   whoami: () => print(`guest（${ROLES[getCurrentRole()].label}の視点で閲覧中。右上の VIEW で切替できます）`),
   skills: () => print(SKILLS.map((s) => `- ${s.name}`).join('\n')),
-  works: () => print('01 このポートフォリオサイト\n   （制作過程は Works に載せています）'),
+  works: () => {
+    print(
+      '01 このポートフォリオサイト\n   （制作過程は Works に載せています）\n02 receipt-normalizer（技術サンプル）'
+    );
+    printLink(`   ${PROFILE.github}/receipt-normalizer`, `${PROFILE.github}/receipt-normalizer`);
+  },
   contact: () => {
     print(`email : ${PROFILE.email}`);
     printLink(`github: ${PROFILE.github}`, PROFILE.github);

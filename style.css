@@ -800,6 +800,17 @@ body[data-role='exec'] .note-exec {
   color: #c9ccd6;
   max-width: 760px;
 }
+.work-dl dd a,
+.work-links a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.work-links {
+  margin-top: 18px;
+  font-family: var(--mono);
+  font-size: 14px;
+}
 @media (max-width: 720px) {
   .work-dl {
     grid-template-columns: 1fr;
