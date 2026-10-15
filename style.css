@@ -373,7 +373,7 @@ body[data-role='exec'] .note-exec {
 .stage {
   position: relative;
   height: 62vh;
-  min-height: 380px;
+  min-height: 440px;
   border: 1px dashed var(--line);
   border-radius: 20px;
   overflow: hidden;
@@ -1053,6 +1053,11 @@ body[data-role='exec'] .note-exec {
   }
   section {
     padding: 12vh 6vw;
+  }
+
+  /* Skills：バッジが多いので、スマホ（幅が狭く、積み上がる）では、高さを確保する */
+  .stage {
+    min-height: 480px;
   }
 
   /* ロール選択：スマホでは3枚が1画面に収まるように詰める */

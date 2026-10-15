@@ -1,12 +1,20 @@
 // 内容データ（ここを書き換えるだけで中身が変わる）
 import { $, $$ } from './dom.js';
 
-// hl: 1 = 緑（インターンで使用）。それ以外は、このサイトの制作で使用したもの
+// hl: 1 = 緑（インターンで使用）。それ以外は、このサイトの制作や、技術サンプルで使用したもの
 // 未使用の技術は載せない（面接で聞かれたときに説明できるものだけ）
 export const SKILLS = [
   { name: 'GAS', hl: 1, desc: 'インターンで、スプレッドシートとの連携に使用。' },
-  { name: 'Python', hl: 1, desc: 'インターンで、Gemini API を呼び出すOCR処理に使用。' },
-  { name: 'Gemini API', hl: 1, desc: 'インターンで、OCR処理（データの読み取り）に使用。' },
+  {
+    name: 'Python',
+    hl: 1,
+    desc: 'インターンで、Gemini API を呼び出すOCR処理に使用。技術サンプル（receipt-normalizer）も Python で作成。'
+  },
+  {
+    name: 'Gemini API',
+    hl: 1,
+    desc: 'インターンで、OCR処理（データの読み取り）に使用。技術サンプルでは、実際に API を呼んで動作を確認。'
+  },
   {
     name: '生成AI活用',
     hl: 1,
@@ -17,7 +25,24 @@ export const SKILLS = [
   { name: 'Three.js', desc: 'このサイトのミニデモ（3D立方体）で使用。' },
   { name: 'GSAP', desc: 'このサイトのスクロール演出、文字の整列などで使用。' },
   { name: 'Matter.js', desc: 'このサイトの、文字とバッジの物理演算で使用。' },
-  { name: 'Vite', desc: 'このサイトの開発・ビルドで使用。' }
+  { name: 'Vite', desc: 'このサイトの開発・ビルドで使用。' },
+  {
+    name: 'SQLite',
+    desc: '技術サンプル（receipt-normalizer）で、取り込み結果の保存と、重複の排除に使用。'
+  },
+  {
+    name: 'pydantic',
+    desc: '技術サンプルで、読み取り結果と、正規化後のデータの型の定義・検証に使用。'
+  },
+  {
+    name: 'pytest',
+    desc: '技術サンプルのテストに使用。外部 API はモックに置き換え、API キー無しで実行できる。'
+  },
+  {
+    name: 'GitHub Actions',
+    desc: 'このサイトと技術サンプルで、push のたびの自動チェック（lint・整形・ビルド・テスト）に使用。'
+  },
+  { name: 'ESLint / Prettier', desc: 'このサイトの、コードの静的チェックと整形に使用。' }
 ];
 
 export const PROFILE = {
